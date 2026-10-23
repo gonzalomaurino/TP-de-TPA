@@ -1,5 +1,14 @@
 /*
  * TPI IoT 4K3 - Grupo 24 - SKETCH 1: ENVIO
+ *
+ * Integrantes (Apellido, Nombre - Legajo):
+ *   Zengaro, Tomas - 403344
+ *   Visintin, Juan - 95843
+ *   Bongiorno, Valentino - 98495
+ *   Peralta, Santino - 403430
+ *   Carrizo, Martin - 400562
+ *   Maurino, Gonzalo - 401062
+ *
  * Se carga por USB. Sensa, muestra en el OLED, envia a ThingSpeak cada 16 s
  * y habilita OTA (ArduinoOTA) para subir el Sketch 2 por WiFi.
  *
@@ -21,8 +30,8 @@
 #include <Adafruit_SH110X.h>
 
 // ===================== CONFIGURACION (completar) =====================
-const char *WIFI_SSID = "Fibertel WiFi787 2.4GHz";   // Red 2.4 GHz (el hotspot del celu sirve)
-const char *WIFI_PASS = "0042171852";
+const char *WIFI_SSID = "CIDS";   // Red 2.4 GHz (el hotspot del celu sirve)
+const char *WIFI_PASS = "NuevaClave2024";
 unsigned long CANAL_ID = 3546746;                   // Channel ID de ThingSpeak
 const char *WRITE_API_KEY = "K50CG6XHY1HWXQN8";
 const char *OTA_HOSTNAME = "esp32-grupo24";   // Nombre del puerto de red en el IDE
@@ -148,14 +157,16 @@ void iniciarOTA() {
 
 // ---------- Touch ----------
 // touchRead() BAJA cuando se toca el pin. Tomamos el valor en reposo
-// al arrancar y consideramos "tocado" por debajo del 60% de ese valor.
+// al arrancar y consideramos "tocado" por debajo del 90% de ese valor.
+// (En la placa de la catedra el dedo baja la lectura solo un 10-30%;
+//  en reposo varia menos del 1%, asi que no se activa solo.)
 int calibrarTouch(int pin) {
   long suma = 0;
   for (int i = 0; i < 20; i++) {
     suma += touchRead(pin);
     delay(10);
   }
-  return (suma / 20) * 60 / 100;
+  return (suma / 20) * 90 / 100;
 }
 
 void leerTouch() {

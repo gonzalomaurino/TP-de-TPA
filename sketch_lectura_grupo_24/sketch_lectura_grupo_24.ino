@@ -1,5 +1,14 @@
 /*
  * TPI IoT 4K3 - Grupo 24 - SKETCH 2: LECTURA
+ *
+ * Integrantes (Apellido, Nombre - Legajo):
+ *   Zengaro, Tomas - 403344
+ *   Visintin, Juan - 95843
+ *   Bongiorno, Valentino - 98495
+ *   Peralta, Santino - 403430
+ *   Carrizo, Martin - 400562
+ *   Maurino, Gonzalo - 401062
+ *
  * Se sube por OTA desde el puerto de red que habilito el Sketch 1.
  * Lee los 6 campos del canal de ThingSpeak, cuenta las pulsaciones del
  * pulsador y muestra todo en el OLED en 2 pantallas rotativas de 3 campos.
@@ -15,8 +24,8 @@
 #include <Adafruit_SH110X.h>
 
 // ===================== CONFIGURACION (completar) =====================
-const char *WIFI_SSID = "Fibertel WiFi787 2.4GHz";   // La misma red que el Sketch 1
-const char *WIFI_PASS = "0042171852";
+const char *WIFI_SSID = "CIDS";   // La misma red que el Sketch 1
+const char *WIFI_PASS = "NuevaClave2024";
 unsigned long CANAL_ID = 3546746;                   // El MISMO canal (publico) del Sketch 1
 const char *OTA_HOSTNAME = "esp32-grupo24";
 // =====================================================================
