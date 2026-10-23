@@ -1,0 +1,22 @@
+name: Prueba Sketch 1 - envio
+version: 1
+author: TPI Grupo 24
+
+steps:
+  - wait-serial: 'OTA listo'
+  # Giramos la perilla a 3/4 y cambiamos el clima del sensor
+  - set-control:
+      part-id: pot1
+      control: position
+      value: 0.75
+  - set-control:
+      part-id: dht1
+      control: temperature
+      value: 30.2
+  - set-control:
+      part-id: dht1
+      control: humidity
+      value: 68
+  - delay: 3000ms
+  # El envio a ThingSpeak tiene que salir OK
+  - wait-serial: 'OK'

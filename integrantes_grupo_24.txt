@@ -1,0 +1,27 @@
+TPI IoT - Tecnologias para la Automatizacion - 4K3 - 2026
+GRUPO 24
+
+Integrantes (Apellido, Nombre - Legajo):
+Zengaro, Tomas - 403344
+Visintin, Juan - 95843
+Bongiorno, Valentino - 98495
+Peralta, Santino - 403430
+Carrizo, Martin - 400562
+Maurino, Gonzalo - 401062
+
+Canal publico de ThingSpeak:
+Channel ID: 3546746
+Write API Key: K50CG6XHY1HWXQN8
+URL publica: https://thingspeak.mathworks.com/channels/3546746
+
+Campos del canal:
+Field 1: Valor aleatorio (100 a 500)
+Field 2: Temperatura (C)
+Field 3: Humedad (%)
+Field 4: Tiempo desde el inicio (s)
+Field 5: PWM LED integrado (0 a 4095, 12 bits)
+Field 6: Brillo LED externo (%)
+
+Archivos:
+sketch_envio_grupo_24.ino   -> Sketch 1, se carga por USB, envia cada 16 s y habilita OTA
+sketch_lectura_grupo_24.ino -> Sketch 2, se carga por OTA, lee el canal y cuenta pulsaciones

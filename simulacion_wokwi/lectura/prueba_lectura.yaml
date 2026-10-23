@@ -1,0 +1,39 @@
+name: Prueba Sketch 2 - lectura
+version: 1
+author: TPI Grupo 24
+
+steps:
+  # Primero tiene que leer el canal de ThingSpeak
+  - wait-serial: 'Lectura OK'
+  # Apretamos el pulsador 3 veces
+  - set-control:
+      part-id: btn1
+      control: pressed
+      value: 1
+  - delay: 100ms
+  - set-control:
+      part-id: btn1
+      control: pressed
+      value: 0
+  - delay: 400ms
+  - set-control:
+      part-id: btn1
+      control: pressed
+      value: 1
+  - delay: 100ms
+  - set-control:
+      part-id: btn1
+      control: pressed
+      value: 0
+  - delay: 400ms
+  - set-control:
+      part-id: btn1
+      control: pressed
+      value: 1
+  - delay: 100ms
+  - set-control:
+      part-id: btn1
+      control: pressed
+      value: 0
+  # Dejamos correr un rato para ver la pantalla con el contador
+  - delay: 15000ms

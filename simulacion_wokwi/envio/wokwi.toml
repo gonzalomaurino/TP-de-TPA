@@ -1,0 +1,4 @@
+[wokwi]
+version = 1
+firmware = 'build/sketch_envio_grupo_24.ino.merged.bin'
+elf = 'build/sketch_envio_grupo_24.ino.elf'

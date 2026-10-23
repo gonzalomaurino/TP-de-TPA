@@ -1,0 +1,463 @@
+<title>TPI IoT Grupo 24</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: hoja de datos técnica. Cada sección es una lámina 16:9 que escala con su ancho (cqw); en el celu se vuelve flujo normal. */
+:root {
+  --paper: #f3f5f2;
+  --sheet: #ffffff;
+  --ink: #17231f;
+  --muted: #56645e;
+  --line: #d3dbd6;
+  --copper: #b4562a;
+  --pcb: #1f5a47;
+  --pcb-soft: #e3eee9;
+  --code-bg: #eef2ef;
+  --f-display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f1513; --sheet: #161e1b; --ink: #e4ece8; --muted: #9aaba3; --line: #2b3833;
+    --copper: #e08a5c; --pcb: #5fc0a0; --pcb-soft: #1c2b26; --code-bg: #111916; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f1513; --sheet: #161e1b; --ink: #e4ece8; --muted: #9aaba3; --line: #2b3833;
+  --copper: #e08a5c; --pcb: #5fc0a0; --pcb-soft: #1c2b26; --code-bg: #111916; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--paper); color: var(--ink); font-family: var(--f-body); line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 24px 48px;
+}
+.deck { max-width: 1180px; margin: 0 auto; display: grid; gap: 28px; }
+.slide {
+  container-type: inline-size; background: var(--sheet); border: 1px solid var(--line);
+  aspect-ratio: 16 / 9; max-width: 100%; position: relative; overflow: hidden;
+}
+.in {
+  position: absolute; inset: 0; padding: 4.2cqw 5cqw 3.6cqw; display: grid;
+  grid-template-rows: auto 1fr; gap: 2.2cqw;
+}
+.head { display: flex; align-items: baseline; justify-content: space-between; gap: 2cqw; border-bottom: 0.18cqw solid var(--ink); padding-bottom: 1.2cqw; }
+.kicker { font-family: var(--f-mono); font-size: 1.15cqw; letter-spacing: 0.12em; text-transform: uppercase; color: var(--copper); }
+h1, h2 { font-family: var(--f-display); font-stretch: 80%; margin: 0; text-wrap: balance; line-height: 1.02; }
+h2 { font-size: 3.6cqw; font-weight: 750; }
+.num { font-family: var(--f-mono); font-size: 1.15cqw; color: var(--muted); white-space: nowrap; }
+p, li { font-size: 1.75cqw; margin: 0; }
+.body { min-height: 0; display: grid; gap: 2.4cqw; align-content: start; }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 3.4cqw; align-items: start; }
+.cols.w { grid-template-columns: 1.15fr 1fr; }
+.stack { display: grid; gap: 1.4cqw; align-content: start; min-width: 0; }
+ul.pts { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.1cqw; }
+ul.pts li { padding-left: 2cqw; position: relative; }
+ul.pts li::before { content: ""; position: absolute; left: 0; top: 0.75em; width: 0.9cqw; height: 0.18cqw; background: var(--copper); }
+b, strong { font-weight: 600; }
+.mono { font-family: var(--f-mono); }
+pre {
+  margin: 0; background: var(--code-bg); border-left: 0.35cqw solid var(--pcb); padding: 1.4cqw 1.6cqw;
+  font-family: var(--f-mono); font-size: 1.35cqw; line-height: 1.55; overflow-x: auto; color: var(--ink); min-width: 0;
+  font-variant-ligatures: none;
+}
+pre .c { color: var(--muted); }
+pre .k { color: var(--copper); font-weight: 600; }
+.tag { display: inline-block; font-family: var(--f-mono); font-size: 1.15cqw; padding: 0.25cqw 0.8cqw; border: 0.12cqw solid var(--pcb); color: var(--pcb); border-radius: 0.3cqw; }
+.note { font-size: 1.45cqw; color: var(--muted); }
+table { border-collapse: collapse; width: 100%; font-size: 1.6cqw; }
+th, td { text-align: left; padding: 0.7cqw 1cqw; border-bottom: 0.1cqw solid var(--line); }
+th { font-family: var(--f-mono); font-size: 1.15cqw; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 400; }
+td.n { font-family: var(--f-mono); color: var(--copper); width: 9cqw; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+/* Portada */
+.cover .in { grid-template-rows: 1fr auto; background:
+  linear-gradient(var(--pcb-soft), var(--pcb-soft)) right / 34% 100% no-repeat; }
+.cover h1 { font-size: 8.2cqw; font-weight: 800; }
+.cover h1 span { color: var(--copper); }
+.cover .sub { font-size: 2.2cqw; max-width: 56cqw; margin-top: 1.6cqw; }
+.dates { display: grid; grid-template-columns: repeat(3, auto); gap: 4cqw; justify-content: start; }
+.date .k { font-family: var(--f-mono); font-size: 1.15cqw; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+.date .v { font-family: var(--f-display); font-stretch: 85%; font-size: 3cqw; font-weight: 700; }
+.chip-stack { position: absolute; right: 5cqw; top: 9cqw; width: 24cqw; display: grid; gap: 1.2cqw; }
+.chip { background: var(--sheet); border: 0.15cqw solid var(--pcb); padding: 1.2cqw 1.4cqw; font-family: var(--f-mono); font-size: 1.3cqw; }
+.chip b { display: block; font-family: var(--f-display); font-size: 2.1cqw; color: var(--pcb); }
+
+/* Flujo */
+.flow { display: grid; grid-template-columns: 1fr 9cqw 1fr 9cqw 1fr; align-items: center; }
+.box { border: 0.18cqw solid var(--ink); padding: 1.6cqw; display: grid; gap: 0.8cqw; background: var(--sheet); min-width: 0; }
+.box.cloud { border-color: var(--pcb); background: var(--pcb-soft); }
+.box h3 { margin: 0; font-family: var(--f-display); font-stretch: 85%; font-size: 2.4cqw; }
+.box p { font-size: 1.45cqw; }
+.arrow { text-align: center; font-family: var(--f-mono); font-size: 1.15cqw; color: var(--copper); }
+.arrow svg { width: 100%; height: 2.4cqw; display: block; }
+
+/* OLED */
+.oled { background: #05080a; color: #bfe3ff; font-family: var(--f-mono); font-size: 1.7cqw; line-height: 1.32;
+  padding: 1.4cqw 1.6cqw; border: 0.6cqw solid #23292d; border-radius: 0.6cqw; white-space: pre; width: max-content; max-width: 100%; overflow: hidden; }
+.oled-cap { font-family: var(--f-mono); font-size: 1.1cqw; color: var(--muted); margin-top: 0.6cqw; }
+.oleds { display: flex; gap: 2cqw; flex-wrap: wrap; }
+
+/* Placa */
+.board svg { width: 100%; height: auto; display: block; }
+.board text { font-family: var(--f-mono); }
+
+/* Pasos */
+ol.steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 1.4cqw 3cqw; counter-reset: s; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 4cqw 1fr; gap: 1cqw; font-size: 1.6cqw; }
+ol.steps li::before { content: counter(s, decimal-leading-zero); font-family: var(--f-mono); color: var(--copper); font-size: 1.6cqw; }
+.qa { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6cqw 3cqw; }
+.qa div { border-top: 0.12cqw solid var(--line); padding-top: 1cqw; display: grid; gap: 0.5cqw; }
+.qa .q { font-weight: 600; font-size: 1.6cqw; }
+.qa .a { font-size: 1.45cqw; color: var(--muted); }
+.files { display: grid; gap: 1cqw; }
+.file { display: flex; justify-content: space-between; gap: 2cqw; border: 0.12cqw solid var(--line); padding: 1.1cqw 1.4cqw; font-family: var(--f-mono); font-size: 1.5cqw; }
+.file span { color: var(--muted); font-family: var(--f-body); }
+
+/* Celular: las láminas pasan a flujo normal */
+@media (max-width: 720px) {
+  .slide { aspect-ratio: auto; container-type: normal; }
+  .in { position: static; padding: 20px 18px; gap: 16px; }
+  .head { flex-wrap: wrap; border-bottom-width: 2px; padding-bottom: 8px; }
+  .kicker, .num, .tag, th, .date .k, .oled-cap { font-size: 11px; }
+  h2 { font-size: 26px; } p, li, ol.steps li, .qa .q { font-size: 15px; }
+  .note, .qa .a, .box p { font-size: 14px; }
+  pre { font-size: 12px; padding: 12px; border-left-width: 3px; }
+  table { font-size: 14px; } td.n { width: auto; }
+  .cols, .cols.w, .qa, ol.steps, .flow { grid-template-columns: 1fr; gap: 14px; }
+  ol.steps li { grid-template-columns: 28px 1fr; } ol.steps li::before { font-size: 14px; }
+  .arrow svg { height: 18px; transform: rotate(90deg); width: 40px; margin: 0 auto; }
+  .box { padding: 12px; } .box h3 { font-size: 20px; }
+  .cover .in { background: none; } .cover h1 { font-size: 44px; } .cover .sub { font-size: 17px; max-width: none; }
+  .chip-stack { position: static; width: auto; grid-template-columns: 1fr; } .chip { font-size: 13px; } .chip b { font-size: 17px; }
+  .dates { grid-template-columns: 1fr; gap: 10px; } .date .v { font-size: 22px; }
+  .oled { font-size: 11px; border-width: 4px; padding: 8px 10px; }
+  ul.pts li { padding-left: 16px; } ul.pts li::before { width: 8px; height: 2px; }
+  .file { font-size: 13px; flex-direction: column; gap: 2px; }
+  .qa div, ul.pts { gap: 6px; }
+}
+
+/* Modo video (solo local, #v1 ... #v13): una lámina a 1280x720 */
+html.video body { padding: 0; background: var(--sheet); }
+html.video .deck { max-width: none; gap: 0; }
+html.video .slide { display: none; width: 1280px; height: 720px; border: 0; }
+html.video .slide.on { display: block; }
+html.video .site-note { display: none; }
+.site-note { max-width: 1180px; margin: 0 auto 18px; font-size: 14px; color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) { .slide { transition: border-color .2s; } .slide:hover { border-color: var(--pcb); } }
+</style>
+
+<p class="site-note">Guía del Grupo 24 para el TPI de IoT (4K3). Recorré las láminas en orden: es lo mismo que se cuenta en el video.</p>
+
+<main class="deck">
+
+<section class="slide cover" id="s1"><div class="in">
+  <div>
+    <div class="kicker">Tecnologías para la Automatización · 4K3 · 2026</div>
+    <h1>TPI IoT<br><span>Grupo 24</span></h1>
+    <p class="sub">Dos sketches para la ESP32: uno mide y sube datos a ThingSpeak, el otro llega por WiFi (OTA) y los vuelve a leer.</p>
+  </div>
+  <div class="dates">
+    <div class="date"><div class="k">Entrega en la UV</div><div class="v">Mié 28/10 · 23:59</div></div>
+    <div class="date"><div class="k">Exposición</div><div class="v">Jue 19/11</div></div>
+    <div class="date"><div class="k">Quién sube</div><div class="v">Un integrante</div></div>
+  </div>
+  <div class="chip-stack" aria-hidden="true">
+    <div class="chip"><b>ESP32</b>DOIT DevKit V1</div>
+    <div class="chip"><b>ThingSpeak</b>canal público · 6 fields</div>
+    <div class="chip"><b>OTA</b>carga por WiFi</div>
+  </div>
+</div></section>
+
+<section class="slide" id="s2"><div class="in">
+  <div class="head"><div><div class="kicker">El panorama</div><h2>Qué hace el sistema completo</h2></div><div class="num">02 / 13</div></div>
+  <div class="body">
+    <div class="flow">
+      <div class="box"><span class="tag">USB</span><h3>Sketch 1 · Envío</h3><p>Lee potenciómetro, touch y DHT22. Controla dos LEDs, muestra todo en el OLED y habilita OTA.</p></div>
+      <div class="arrow"><svg viewBox="0 0 100 20" preserveAspectRatio="none"><line x1="2" y1="10" x2="90" y2="10" stroke="currentColor" stroke-width="2"/><path d="M88 3 L98 10 L88 17 Z" fill="currentColor"/></svg>cada 16 s</div>
+      <div class="box cloud"><span class="tag">HTTP</span><h3>ThingSpeak</h3><p>Canal público con 6 campos. Guarda cada envío y lo grafica.</p></div>
+      <div class="arrow"><svg viewBox="0 0 100 20" preserveAspectRatio="none"><line x1="2" y1="10" x2="90" y2="10" stroke="currentColor" stroke-width="2"/><path d="M88 3 L98 10 L88 17 Z" fill="currentColor"/></svg>lee</div>
+      <div class="box"><span class="tag">OTA</span><h3>Sketch 2 · Lectura</h3><p>Se sube por WiFi, sin cable. Lee el canal, cuenta el pulsador y muestra en el OLED.</p></div>
+    </div>
+    <ul class="pts">
+      <li>Es <b>una sola placa</b>: primero corre el Sketch 1, después el Sketch 2 lo reemplaza.</li>
+      <li>El Sketch 1 tiene que estar andando para poder mandar el Sketch 2 por OTA.</li>
+      <li>Los dos sketches usan <b>el mismo canal</b> de ThingSpeak.</li>
+    </ul>
+  </div>
+</div></section>
+
+<section class="slide board" id="s3"><div class="in">
+  <div class="head"><div><div class="kicker">La placa de la cátedra</div><h2>Qué hay en la placa y en qué pin está</h2></div><div class="num">03 / 13</div></div>
+  <div class="body cols w">
+    <svg viewBox="0 0 620 360" role="img" aria-label="Esquema de la placa con la ESP32 al centro y los componentes alrededor">
+      <rect x="10" y="10" width="600" height="340" rx="14" fill="var(--pcb-soft)" stroke="var(--pcb)" stroke-width="3"/>
+      <rect x="240" y="110" width="140" height="150" rx="6" fill="var(--sheet)" stroke="var(--ink)" stroke-width="2.5"/>
+      <text x="310" y="180" text-anchor="middle" font-size="20" font-weight="600" fill="var(--ink)">ESP32</text>
+      <text x="310" y="202" text-anchor="middle" font-size="12" fill="var(--muted)">LED azul: GPIO2</text>
+      <rect x="290" y="262" width="40" height="22" fill="var(--muted)"/><text x="310" y="300" text-anchor="middle" font-size="12" fill="var(--muted)">USB</text>
+      <g fill="var(--sheet)" stroke="var(--ink)" stroke-width="2">
+        <rect x="235" y="28" width="150" height="62" rx="4" fill="#05080a"/>
+        <circle cx="80" cy="80" r="26"/>
+        <rect x="52" y="160" width="56" height="70" rx="4"/>
+        <circle cx="545" cy="80" r="16"/>
+        <rect x="505" y="150" width="34" height="34" rx="6"/><rect x="555" y="150" width="34" height="34" rx="6"/>
+        <circle cx="545" cy="262" r="24"/>
+        <rect x="52" y="270" width="70" height="50" rx="4"/>
+      </g>
+      <circle cx="545" cy="80" r="9" fill="var(--pcb)"/>
+      <circle cx="545" cy="262" r="10" fill="var(--copper)"/>
+      <line x1="80" y1="80" x2="98" y2="62" stroke="var(--ink)" stroke-width="3"/>
+      <text x="310" y="64" text-anchor="middle" font-size="13" fill="#bfe3ff">OLED SH1106</text>
+      <g font-size="13" fill="var(--ink)">
+        <text x="310" y="106" text-anchor="middle">SDA 21 · SCL 22 · 0x3C</text>
+        <text x="80" y="124" text-anchor="middle">Potenciómetro</text><text x="80" y="140" text-anchor="middle" fill="var(--copper)">GPIO32</text>
+        <text x="80" y="250" text-anchor="middle">DHT22 (T y H)</text><text x="80" y="200" text-anchor="middle" fill="var(--copper)">GPIO33</text>
+        <text x="545" y="120" text-anchor="middle">LED verde</text><text x="545" y="136" text-anchor="middle" fill="var(--copper)">GPIO23</text>
+        <text x="522" y="172" text-anchor="middle">+</text><text x="572" y="172" text-anchor="middle">−</text>
+        <text x="547" y="204" text-anchor="middle">Touch 13 / 4</text>
+        <text x="545" y="304" text-anchor="middle">Pulsador</text><text x="545" y="320" text-anchor="middle" fill="var(--copper)">push GPIO19</text>
+        <text x="87" y="300" text-anchor="middle">Relay</text><text x="87" y="338" text-anchor="middle" fill="var(--muted)">GPIO14 (no se usa)</text>
+      </g>
+    </svg>
+    <div class="stack">
+      <table>
+        <tr><th>Componente</th><th>Pin</th></tr>
+        <tr><td>Potenciómetro</td><td class="n">32</td></tr>
+        <tr><td>Sensor DHT22</td><td class="n">33</td></tr>
+        <tr><td>LED integrado (azul)</td><td class="n">2</td></tr>
+        <tr><td>LED externo (verde)</td><td class="n">23</td></tr>
+        <tr><td>Touch + / Touch −</td><td class="n">13 / 4</td></tr>
+        <tr><td>Pulsador (encoder)</td><td class="n">19</td></tr>
+        <tr><td>OLED SDA / SCL</td><td class="n">21 / 22</td></tr>
+      </table>
+      <p class="note">Esquema ilustrativo: la ubicación física puede variar, los pines son los de la hoja de la cátedra.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" id="s4"><div class="in">
+  <div class="head"><div><div class="kicker">Sketch 1 · parte 1</div><h2>Potenciómetro → brillo del LED integrado</h2></div><div class="num">04 / 13</div></div>
+  <div class="body cols">
+    <div class="stack">
+      <ul class="pts">
+        <li>El ADC de la ESP32 lee el potenciómetro con <b>12 bits</b>: de 0 a 4095.</li>
+        <li>El PWM también lo configuramos en <b>12 bits</b>: de 0 a 4095.</li>
+        <li>Por eso el valor leído va <b>directo</b> al LED, sin <span class="mono">map()</span>.</li>
+        <li>En pantalla se ve el número de PWM: <span class="mono">PWM LED int: 2731</span>.</li>
+      </ul>
+      <p class="note">PWM: el LED se prende y apaga miles de veces por segundo; cuanto más tiempo prendido, más brillo.</p>
+    </div>
+    <pre><span class="c">// 12 bits = 4096 niveles</span>
+analogReadResolution(<span class="k">12</span>);
+ledcAttach(PIN_LED_INT, <span class="k">5000</span>, <span class="k">12</span>);
+
+<span class="c">// en el loop</span>
+pwmLedInt = analogRead(PIN_POTE);
+ledcWrite(PIN_LED_INT, pwmLedInt);</pre>
+  </div>
+</div></section>
+
+<section class="slide" id="s5"><div class="in">
+  <div class="head"><div><div class="kicker">Sketch 1 · parte 2</div><h2>Dos pines touch → brillo del LED externo</h2></div><div class="num">05 / 13</div></div>
+  <div class="body cols">
+    <div class="stack">
+      <ul class="pts">
+        <li><span class="mono">touchRead()</span> mide la capacitancia del pin: <b>el valor baja</b> cuando lo tocás.</li>
+        <li>Al arrancar medimos el valor en reposo y el umbral queda en el <b>60 %</b> de eso.</li>
+        <li>Mientras tocás el 13 el brillo sube 1 % cada 50 ms; con el 4, baja.</li>
+        <li>En pantalla: <span class="mono">LED ext: 45 %</span>.</li>
+      </ul>
+      <p class="note">No toquen los pines durante los primeros 2 segundos: ahí se calibran.</p>
+    </div>
+    <pre><span class="c">// tocado = por debajo del umbral</span>
+<span class="k">if</span> (touchRead(T4) &lt; umbralMas)
+  pwmLedExt = min(pwmLedExt + PASO, <span class="k">4095</span>);
+<span class="k">if</span> (touchRead(T0) &lt; umbralMenos)
+  pwmLedExt = max(pwmLedExt - PASO, <span class="k">0</span>);
+
+porcentaje = pwmLedExt * <span class="k">100</span> / <span class="k">4095</span>;</pre>
+  </div>
+</div></section>
+
+<section class="slide" id="s6"><div class="in">
+  <div class="head"><div><div class="kicker">Sketch 1 · parte 3</div><h2>Temperatura, humedad y la pantalla</h2></div><div class="num">06 / 13</div></div>
+  <div class="body cols">
+    <div class="stack">
+      <ul class="pts">
+        <li>El <b>DHT22</b> en el pin 33 da temperatura y humedad. Se lee cada 2 s, que es lo más rápido que permite.</li>
+        <li>Si una lectura falla, se conserva la anterior.</li>
+        <li>El OLED se redibuja cada 200 ms: todo se ve <b>en tiempo real</b>.</li>
+        <li>La última línea muestra la IP: sirve para confirmar que hay WiFi.</li>
+      </ul>
+    </div>
+    <div>
+<div class="oled">TPI G24 - ENVIO
+PWM LED int: 2731
+LED ext: 45 %
+Temp: 23.4 C
+Hum:  48.0 %
+Envio en 9s [OK]
+IP 192.168.43.120</div>
+      <div class="oled-cap">Así se ve el display con el Sketch 1</div>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" id="s7"><div class="in">
+  <div class="head"><div><div class="kicker">Sketch 1 · parte 4</div><h2>Envío a ThingSpeak cada 16 segundos</h2></div><div class="num">07 / 13</div></div>
+  <div class="body cols">
+    <table>
+      <tr><th>Field</th><th>Valor</th></tr>
+      <tr><td class="n">1</td><td>Aleatorio entre 100 y 500</td></tr>
+      <tr><td class="n">2</td><td>Temperatura</td></tr>
+      <tr><td class="n">3</td><td>Humedad</td></tr>
+      <tr><td class="n">4</td><td>Segundos desde el inicio</td></tr>
+      <tr><td class="n">5</td><td>PWM del LED integrado</td></tr>
+      <tr><td class="n">6</td><td>% de brillo del LED externo</td></tr>
+    </table>
+    <div class="stack">
+      <pre>ThingSpeak.setField(<span class="k">1</span>, random(<span class="k">100</span>, <span class="k">501</span>));
+ThingSpeak.setField(<span class="k">2</span>, temperatura);
+<span class="c">// ... campos 3 a 6</span>
+ThingSpeak.writeFields(CANAL_ID, API_KEY);</pre>
+      <ul class="pts">
+        <li>La cuenta gratis acepta <b>un envío cada 15 s</b>: por eso 16.</li>
+        <li>Los 6 valores van en <b>una sola escritura</b>. Seis <span class="mono">writeField</span> seguidos serían rechazados.</li>
+      </ul>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" id="s8"><div class="in">
+  <div class="head"><div><div class="kicker">OTA · Over The Air</div><h2>Cómo llega el Sketch 2 sin cable</h2></div><div class="num">08 / 13</div></div>
+  <div class="body cols">
+    <div class="stack">
+      <ul class="pts">
+        <li>El Sketch 1 inicia <span class="mono">ArduinoOTA</span>: la placa queda escuchando programas nuevos por WiFi.</li>
+        <li>En Arduino IDE aparece un <b>puerto de red</b>: <span class="mono">esp32-grupo24 at 192.168…</span></li>
+        <li>Elegís ese puerto, abrís el Sketch 2 y tocás Subir. La pantalla muestra el progreso.</li>
+        <li>La notebook y la placa tienen que estar en <b>la misma red</b>. Usen el hotspot del celu en <b>2.4 GHz</b>.</li>
+      </ul>
+    </div>
+    <div class="stack">
+      <pre><span class="c">// setup()</span>
+ArduinoOTA.setHostname(<span class="k">"esp32-grupo24"</span>);
+ArduinoOTA.begin();
+
+<span class="c">// loop(): siempre primero</span>
+ArduinoOTA.handle();</pre>
+      <p class="note">Por eso no hay <span class="mono">delay()</span> largos: si el loop se traba, la placa no atiende el OTA. Todo se temporiza con <span class="mono">millis()</span>.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" id="s9"><div class="in">
+  <div class="head"><div><div class="kicker">Sketch 2 · parte 1</div><h2>Leer el canal y mostrarlo en pantallas rotativas</h2></div><div class="num">09 / 13</div></div>
+  <div class="body cols w">
+    <div class="stack">
+      <pre><span class="c">// canal público: no hace falta Read Key</span>
+ThingSpeak.readMultipleFields(CANAL_ID);
+<span class="k">for</span> (<span class="k">int</span> i = <span class="k">0</span>; i &lt; <span class="k">6</span>; i++)
+  campos[i] = ThingSpeak.getFieldAsFloat(i + <span class="k">1</span>);</pre>
+      <ul class="pts">
+        <li>Trae el <b>último registro completo</b> del canal, cada 16 s.</li>
+        <li>Dos pantallas de 3 campos que se alternan cada 4 s.</li>
+        <li>Abajo siempre: pulsaciones y hace cuánto se leyó.</li>
+      </ul>
+    </div>
+    <div class="oleds">
+<div><div class="oled">TPI G24 - LECTURA 1/2
+---------------------
+F1 Aleatorio   347
+F2 Temp (C)    23.4
+F3 Humedad %   48.0
+---------------------
+Pulsaciones: 5
+Leido hace 3s</div><div class="oled-cap">Pantalla 1 de 2</div></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="slide" id="s10"><div class="in">
+  <div class="head"><div><div class="kicker">Sketch 2 · parte 2</div><h2>Contar el pulsador sin perder ninguna</h2></div><div class="num">10 / 13</div></div>
+  <div class="body cols">
+    <div class="stack">
+      <ul class="pts">
+        <li>El pulsador (GPIO19) usa <span class="mono">INPUT_PULLUP</span>: suelto vale HIGH y apretado vale LOW.</li>
+        <li>Contamos con una <b>interrupción</b> en el flanco de bajada.</li>
+        <li><b>¿Por qué?</b> Leer ThingSpeak tarda alrededor de 1 s. Si lo leyéramos en el loop, en ese segundo se perderían pulsaciones.</li>
+        <li><b>Antirrebote</b>: el contacto vibra al apretar. Se ignoran pulsos a menos de 200 ms del anterior.</li>
+      </ul>
+    </div>
+    <pre>attachInterrupt(digitalPinToInterrupt(<span class="k">19</span>),
+                alPresionar, FALLING);
+
+<span class="k">void</span> IRAM_ATTR alPresionar() {
+  <span class="k">if</span> (millis() - tUltima &gt; <span class="k">200</span>) {
+    pulsaciones = pulsaciones + <span class="k">1</span>;
+    tUltima = millis();
+  }
+}</pre>
+  </div>
+</div></section>
+
+<section class="slide" id="s11"><div class="in">
+  <div class="head"><div><div class="kicker">El día de la prueba</div><h2>Paso a paso con la placa</h2></div><div class="num">11 / 13</div></div>
+  <div class="body">
+    <ol class="steps">
+      <li>Instalar Arduino IDE, la placa esp32 de Espressif y las 5 librerías.</li>
+      <li>Crear el canal en ThingSpeak con 6 fields y hacerlo público.</li>
+      <li>Prender el hotspot del celu en 2.4 GHz y conectar la notebook.</li>
+      <li>Completar red, clave, Channel ID y Write Key en los sketches.</li>
+      <li>Placa “DOIT ESP32 DEVKIT V1”, puerto COM y subir el Sketch 1.</li>
+      <li>Probar pote, touch y pantalla; ver puntos nuevos en ThingSpeak.</li>
+      <li>Elegir el puerto de red <span class="mono">esp32-grupo24</span> y subir el Sketch 2.</li>
+      <li>Ver las pantallas rotativas y apretar el pulsador.</li>
+    </ol>
+    <p class="note">Si la subida por USB se queda en “Connecting…”, mantengan apretado el botón BOOT de la ESP32.</p>
+  </div>
+</div></section>
+
+<section class="slide" id="s12"><div class="in">
+  <div class="head"><div><div class="kicker">Para la exposición</div><h2>Lo que les puede preguntar la profe</h2></div><div class="num">12 / 13</div></div>
+  <div class="body qa">
+    <div><span class="q">¿Por qué 16 segundos?</span><span class="a">ThingSpeak gratis acepta un envío cada 15 s. Con 16 hay margen.</span></div>
+    <div><span class="q">¿Qué es PWM de 12 bits?</span><span class="a">4096 niveles de brillo (0 a 4095), controlando cuánto tiempo está prendido el LED.</span></div>
+    <div><span class="q">¿Cómo funciona el touch?</span><span class="a">Mide capacitancia; el dedo la cambia y el valor baja. Comparamos contra un umbral calibrado.</span></div>
+    <div><span class="q">¿Qué es OTA?</span><span class="a">Cargar firmware por WiFi. El Sketch 1 abre un puerto de red que el IDE usa como si fuera USB.</span></div>
+    <div><span class="q">¿Por qué no usan delay()?</span><span class="a">Bloquearía el loop: no se atendería el OTA, el touch ni la pantalla. Usamos millis().</span></div>
+    <div><span class="q">¿Por qué interrupción en el pulsador?</span><span class="a">Mientras se lee ThingSpeak el loop está esperando; la interrupción cuenta igual.</span></div>
+  </div>
+</div></section>
+
+<section class="slide" id="s13"><div class="in">
+  <div class="head"><div><div class="kicker">La entrega</div><h2>Qué se sube a la UV</h2></div><div class="num">13 / 13</div></div>
+  <div class="body cols">
+    <div class="files">
+      <div class="file">sketch_envio_grupo_24.ino<span>Sketch 1</span></div>
+      <div class="file">sketch_lectura_grupo_24.ino<span>Sketch 2</span></div>
+      <div class="file">integrantes_grupo_24.txt<span>Nombres, legajos, Channel ID y Write Key</span></div>
+    </div>
+    <ul class="pts">
+      <li>Lo sube <b>un solo integrante</b>, antes del <b>miércoles 28/10 a las 23:59</b>.</li>
+      <li>Se evalúa <b>solo lo que está en la UV</b>.</li>
+      <li>Para la <b>aprobación directa</b> el código tiene que funcionar en esta entrega.</li>
+      <li>El <b>jueves 19/11</b> exponemos: tenemos que estar los seis.</li>
+    </ul>
+  </div>
+</div></section>
+
+</main>
+
+<script>
+(function () {
+  var m = /^#v(\d+)$/.exec(location.hash);
+  if (!m) return;
+  document.documentElement.classList.add('video');
+  document.documentElement.setAttribute('data-theme', 'light');
+  var s = document.getElementById('s' + m[1]);
+  if (s) s.classList.add('on');
+})();
+</script>
